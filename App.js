@@ -14,7 +14,7 @@ import SearchProduct from './searchProduct';
 const Stack = createNativeStackNavigator();
 //asdasdasd
 const App = () => {
-
+console.log('hello')
   return (
     <NavigationContainer>
       <Stack.Navigator
