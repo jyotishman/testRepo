@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
   pageHeading: {
     fontSize: 20,
     textAlign: 'center',
-    fontWeight: 'bold',
     color: '#000',
+    fontFamily: 'Montserrat-Bold'
   },
   productItemContainer: {
     flexDirection: 'row',

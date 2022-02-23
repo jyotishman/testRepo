@@ -55,7 +55,7 @@ export default function Phonepehome(props) {
           </View>
         </View>
         <View style={{padding: 20}}>
-          <Text>Money Transfers</Text>
+          <Text>Money Transfers </Text>
           <ScrollView style={{}} horizontal={true}>
             <View style={styles.moneyTransferItem}>
               <Image style={styles.moneyIcon} source={barcode} />

@@ -10,13 +10,18 @@ import Phonepehome from './phonepehome';
 import Webview from './webview';
 import Login from './login';
 import SearchProduct from './searchProduct';
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
+  React.useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="RNForm"
+        initialRouteName="SearchProduct"
         screenOptions={{
           headerShown: false,
         }}>
@@ -31,7 +36,9 @@ const App = () => {
         <Stack.Screen name="Phonepehome" component={Phonepehome}></Stack.Screen>
         <Stack.Screen name="Webview" component={Webview}></Stack.Screen>
         <Stack.Screen name="Login" component={Login}></Stack.Screen>
-        <Stack.Screen name="SearchProduct" component={SearchProduct}></Stack.Screen>
+        <Stack.Screen
+          name="SearchProduct"
+          component={SearchProduct}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
