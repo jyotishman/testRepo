@@ -10,6 +10,7 @@ import Phonepehome from './phonepehome';
 import Webview from './webview';
 import Login from './login';
 import SearchProduct from './searchProduct';
+import QuizHomepage from './quiz';
 import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +22,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SearchProduct"
+        initialRouteName="QuizHomepage"
         screenOptions={{
           headerShown: false,
         }}>
@@ -36,6 +37,7 @@ const App = () => {
         <Stack.Screen name="Phonepehome" component={Phonepehome}></Stack.Screen>
         <Stack.Screen name="Webview" component={Webview}></Stack.Screen>
         <Stack.Screen name="Login" component={Login}></Stack.Screen>
+        <Stack.Screen name="QuizHomepage" component={QuizHomepage}></Stack.Screen>
         <Stack.Screen
           name="SearchProduct"
           component={SearchProduct}></Stack.Screen>
