@@ -10,33 +10,41 @@ import {
   View,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch, useSelector} from 'react-redux';
 import ProductItem from './productItem';
+import {saveCatalogData} from './redux/catalogSlice';
 
 export default function ApiCall(props) {
-  const [apiData, setapiData] = useState([]);
   const [isLoading, setisLoading] = useState(false);
+  const [totalQuantity, setQty] = useState(0);
+  const dispatch = useDispatch();
+  const productData = useSelector(state => state.catalogReducer.data);
+  const cartData = useSelector(state => state.cartReducer.data);
   const apiURL =
     'https://api.dotshowroom.in/api/dotk/catalog/getItemsBasicDetailsByStoreId/2490120?category_type=0';
-
   useEffect(() => {
-    //start loader
     setisLoading(true);
     axios
       .get(apiURL)
-      //api is pending. api call is going on in the server
       .then(data => {
-        //api call is success and complete
-        //false loader
-        setapiData(data.data);
+        dispatch({
+          type: saveCatalogData,
+          payload: data.data,
+        });
         setisLoading(false);
       })
-      .catch(() => {
-        //loader is false
-        //error handling
-        setisLoading(false);
-      });
-    //empty array means it will work only first time it loads
+      .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    var totalQty = 0;
+    cartData &&
+      Object.keys(cartData).length &&
+      Object.keys(cartData).map(key => {
+        totalQty = totalQty + cartData[key].quantity;
+      });
+    setQty(totalQty);
+  }, [cartData]);
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -51,7 +59,7 @@ export default function ApiCall(props) {
         {isLoading ? <Text>Please wait... Loading</Text> : null}
         <View style={{flex: 1, padding: 20}}>
           <ScrollView>
-            {apiData?.store_items?.map(item => {
+            {productData?.store_items?.map(item => {
               return (
                 <View key={item.category.name}>
                   <TouchableOpacity
@@ -93,7 +101,7 @@ export default function ApiCall(props) {
             }}
             onPress={() => props.navigation.navigate('CartPage')}>
             <Text style={{color: '#fff'}}>View Cart</Text>
-            <Text style={{color: '#fff'}}>{10} items</Text>
+            <Text style={{color: '#fff'}}>{totalQuantity} items</Text>
           </Pressable>
         }
       </View>
