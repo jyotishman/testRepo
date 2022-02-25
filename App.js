@@ -11,9 +11,12 @@ import Webview from './webview';
 import Login from './login';
 import SearchProduct from './searchProduct';
 import QuizHomepage from './quiz';
+import CartPage from './cart';
+import CategoryPage from './categoryPage';
 import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
+
 const App = () => {
   React.useEffect(() => {
     SplashScreen.hide();
@@ -22,7 +25,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="QuizHomepage"
+        initialRouteName="Apicall"
         screenOptions={{
           headerShown: false,
         }}>
@@ -38,6 +41,8 @@ const App = () => {
         <Stack.Screen name="Webview" component={Webview}></Stack.Screen>
         <Stack.Screen name="Login" component={Login}></Stack.Screen>
         <Stack.Screen name="QuizHomepage" component={QuizHomepage}></Stack.Screen>
+        <Stack.Screen name="CartPage" component={CartPage}></Stack.Screen>
+        <Stack.Screen name="CategoryPage" component={CategoryPage}></Stack.Screen>
         <Stack.Screen
           name="SearchProduct"
           component={SearchProduct}></Stack.Screen>

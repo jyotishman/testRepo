@@ -1,17 +1,16 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  StyleSheet,
-  Button,
-  Pressable,
-  Linking,
-  Platform,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import ProductItem from './productItem';
 
 export default function ApiCall(props) {
   const [apiData, setapiData] = useState([]);
@@ -40,7 +39,7 @@ export default function ApiCall(props) {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <Text style={styles.pageHeading}>ApiCall</Text>
         <Pressable
@@ -50,54 +49,53 @@ export default function ApiCall(props) {
           <Text>Redirect me to google in browser</Text>
         </Pressable>
         {isLoading ? <Text>Please wait... Loading</Text> : null}
-        <ScrollView>
-          {apiData?.store_items?.map(item => {
-            return (
-              <View key={item.category.name}>
-                <Text style={styles.catName}>
-                  {item.category && item.category.name}
-                </Text>
-                <View style={styles.productItemContainer}>
-                  {item?.items?.map(productItem => {
-                    return (
-                      <View style={styles.productItem} key={productItem?.id}>
-                        <Image
-                          style={{height: 150, width: '100%'}}
-                          source={{uri: productItem?.image_url}}
+        <View style={{flex: 1, padding: 20}}>
+          <ScrollView>
+            {apiData?.store_items?.map(item => {
+              return (
+                <View key={item.category.name}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      props.navigation.navigate('CategoryPage', {
+                        data: item,
+                      })
+                    }>
+                    <Text style={styles.catName}>
+                      {item.category && item.category.name}
+                    </Text>
+                  </TouchableOpacity>
+                  <View style={styles.productItemContainer}>
+                    {item?.items?.slice(0, 2)?.map((productItem, index) => {
+                      return (
+                        <ProductItem
+                          data={productItem}
+                          key={item.category && item.category.id + index}
                         />
-                        <Text
-                          style={{
-                            fontSize: 15,
-                            marginBottom: 10,
-                            color: '#000',
-                          }}
-                          numberOfLines={1}>
-                          {productItem?.name}
-                        </Text>
-                        <View style={styles.priceWrap}>
-                          <Text style={styles.dprice}>
-                            {productItem?.price} INR
-                          </Text>
-                          <Text style={styles.oprice}>
-                            {productItem?.discounted_price} INR
-                          </Text>
-                        </View>
-                        <Button
-                          onPress={() =>
-                            props.navigation.navigate('DetailPage', {
-                              data: productItem,
-                            })
-                          }
-                          title="Add to cart"
-                        />
-                      </View>
-                    );
-                  })}
+                      );
+                    })}
+                  </View>
+                  {item?.items?.length > 2 ? (
+                    <Text>See all products...</Text>
+                  ) : null}
                 </View>
-              </View>
-            );
-          })}
-        </ScrollView>
+              );
+            })}
+          </ScrollView>
+        </View>
+
+        {
+          <Pressable
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              padding: 10,
+              backgroundColor: 'blue',
+            }}
+            onPress={() => props.navigation.navigate('CartPage')}>
+            <Text style={{color: '#fff'}}>View Cart</Text>
+            <Text style={{color: '#fff'}}>{10} items</Text>
+          </Pressable>
+        }
       </View>
     </SafeAreaView>
   );
@@ -105,13 +103,13 @@ export default function ApiCall(props) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
   },
   pageHeading: {
     fontSize: 20,
     textAlign: 'center',
     color: '#000',
-    fontFamily: 'Montserrat-Bold'
+    fontFamily: 'Montserrat-Bold',
   },
   productItemContainer: {
     flexDirection: 'row',
